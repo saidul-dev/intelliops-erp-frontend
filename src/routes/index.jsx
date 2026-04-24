@@ -3,6 +3,7 @@ import PublicLayout from "../layouts/PublicLayout";
 import Home from "../pages/frontend/Home";
 import About from "../pages/frontend/About";
 import Contact from "../pages/frontend/Contact";
+import Login from "../pages/frontend/Login";
 import Dashboard from "../pages/dashboard/Dashboard";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Users from "../pages/dashboard/Users";
@@ -18,6 +19,10 @@ export const router = createBrowserRouter([
             { path: "about", element: <About /> },
             { path: "contact", element: <Contact /> },
         ]
+    },
+    {
+        path: "/login",
+        element: <Login />
     },
     {
         path: "/dashboard",

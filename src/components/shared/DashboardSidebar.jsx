@@ -7,6 +7,13 @@ const DashboardSidebar = () => {
         <div className="drawer-side is-drawer-close:overflow-visible">
             <label htmlFor="my-drawer-4" aria-label="close sidebar" className="drawer-overlay"></label>
             <div className="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
+                <div className="min-h-[64px] w-full border-b">
+                    {/* Logo */}
+                    <div className="flex items-center gap-2 px-4 py-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="size-6"><path d="M12 20h9"></path><path d="M12 4h9"></path><path d="M4 12h16"></path></svg>
+                        <span className="is-drawer-close:hidden font-bold">Intelliops ERP</span>
+                    </div>
+                </div>
                 {/* Sidebar content here */}
                 <ul className="menu w-full grow">
                     {/* List item */}
