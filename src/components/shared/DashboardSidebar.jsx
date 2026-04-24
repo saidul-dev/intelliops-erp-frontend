@@ -10,8 +10,18 @@ const DashboardSidebar = () => {
                 <div className="min-h-[64px] w-full border-b">
                     {/* Logo */}
                     <div className="flex items-center gap-2 px-4 py-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="size-6"><path d="M12 20h9"></path><path d="M12 4h9"></path><path d="M4 12h16"></path></svg>
-                        <span className="is-drawer-close:hidden font-bold">Intelliops ERP</span>
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="currentColor"
+                            className="w-10 h-10 text-slate-900"
+                            >
+                            <path
+                                fillRule="evenodd"
+                                d="M12 2.25a5.25 5.25 0 1 0 0 10.5 5.25 5.25 0 0 0 0-10.5ZM6.75 18a5.25 5.25 0 0 1 10.5 0v.75a.75.75 0 0 0 1.5 0V18a6.75 6.75 0 0 0-13.5 0v.75a.75.75 0 0 0 1.5 0V18Z"
+                                clipRule="evenodd"
+                            />
+                        </svg>
+                        <span className="is-drawer-close:hidden font-bold">Super Admin</span>
                     </div>
                 </div>
                 {/* Sidebar content here */}
