@@ -1,91 +1,182 @@
-import React, { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
+import { Store } from "lucide-react";
+import { Button, Form, Input } from "antd";
+
+import { toast } from "@/components/ui/use-toast";
+import {
+    useLoginMutation,
+} from "@/redux/features/auth/authApi";
+import { useAppDispatch } from "@/redux/hooks";
+import {
+    normalizeUserRole,
+    roleMap,
+    setUser,
+} from "@/redux/features/auth/authSlice";
+
+const getRedirectPath = (role) => {
+    switch (normalizeUserRole(role)) {
+        case roleMap.PROVIDER:
+            return "/provider/dashboard";
+        case roleMap.CUSTOMER:
+            return "/";
+        case roleMap.ADMIN:
+            return "/admin/dashboard";
+        case roleMap.SUPER_ADMIN:
+            return "/super-admin/dashboard";
+        default:
+            return "/";
+    }
+};
+
 
 const Login = () => {
-    const [showPassword, setShowPassword] = useState(false);
+    const [form] = Form.useForm();
+    const navigate = useNavigate();
+    const location = useLocation();
+    const dispatch = useAppDispatch();
+
+    const [login, { isLoading }] = useLoginMutation();
+
+    const from = location?.state?.from || "/";
+
+    const onFinish = async (values) => {
+        try {
+            const userInfo = {
+                email: values.email,
+                password: values.password,
+            };
+
+            const res = await login(userInfo).unwrap();
+            const userRole = normalizeUserRole(res?.data?.user?.role);
+
+            if (res?.success === true) {
+                dispatch(
+                    setUser({
+                        user: res.data.user,
+                        token: res.data.accessToken,
+                    }),
+                );
+
+                toast({
+                    title: "Login successful",
+                    description: res.message || "You are now signed in.",
+                });
+
+                form.resetFields();
+
+                navigate(from !== "/" ? from : getRedirectPath(userRole), {
+                    replace: true,
+                });
+            }
+        } catch (error) {
+            toast({
+                title: "Login failed",
+                description:
+                    error?.data?.errorMessage ||
+                    error?.data?.message ||
+                    "Something went wrong",
+                variant: "destructive",
+            });
+        }
+    };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-slate-200 px-4">
-            <div className="w-full max-w-md bg-white rounded-2xl shadow-xl border border-slate-200 p-8">
-                
-                {/* Logo / Header */}
-                <div className="text-center mb-8">
-                    <div className="mx-auto w-14 h-14 flex items-center justify-center rounded-2xl bg-slate-900 text-white font-bold text-xl shadow-md">
-                        ERP
-                    </div>
-                    <h1 className="text-2xl font-bold text-slate-900 mt-4">
+        <div className="min-h-screen flex">
+            <div className="hidden lg:flex flex-1 gradient-hero items-center justify-center p-12">
+                <div className="max-w-md text-center">
+                    <Link to="/" className="flex items-center gap-2 mb-6 justify-center">
+                        <Store className="h-16 w-16 mx-auto mb-6 text-primary" />
+                    </Link>
+
+                    <h2
+                        className="text-3xl font-bold mb-4"
+                        style={{ color: "hsl(0,0%,100%)" }}
+                    >
                         Welcome Back
-                    </h1>
-                    <p className="text-slate-500 text-sm mt-1">
-                        Login to access your ERP dashboard
+                    </h2>
+
+                    <p style={{ color: "hsl(220,14%,70%)" }}>
+                        Please enter your credentials to sign in as a customer or provider.
                     </p>
                 </div>
+            </div>
 
-                {/* Form */}
-                <form className="space-y-5">
-                    {/* Email */}
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">
-                            Email Address
-                        </label>
-                        <input
-                            type="email"
-                            placeholder="example@company.com"
-                            className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none text-slate-800 text-sm"
-                        />
+            <div className="flex-1 flex items-center justify-center p-8">
+                <div className="w-full max-w-sm">
+                    <div className="mb-8">
+                        <Link to="/" className="flex items-center gap-2 mb-8 lg:hidden">
+                            <Store className="h-7 w-7 text-primary" />
+                            <span className="text-xl font-bold">SmallShop</span>
+                        </Link>
+
+                        <h1 className="text-2xl font-bold">Sign In</h1>
+                        <p className="text-sm text-muted-foreground mt-1">
+                            Enter your email and password to continue
+                        </p>
                     </div>
 
-                    {/* Password */}
-                    <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">
-                            Password
-                        </label>
-                        <div className="relative">
-                            <input
-                                type={showPassword ? "text" : "password"}
-                                placeholder="Enter your password"
-                                className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 outline-none text-slate-800 text-sm pr-12"
-                            />
-                            <button
-                                type="button"
-                                onClick={() => setShowPassword(!showPassword)}
-                                className="absolute top-1/2 right-4 -translate-y-1/2 text-slate-500 text-sm hover:text-slate-900"
-                            >
-                                {showPassword ? "Hide" : "Show"}
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* Remember & Forgot */}
-                    <div className="flex items-center justify-between">
-                        <label className="flex items-center gap-2 text-sm text-slate-600">
-                            <input
-                                type="checkbox"
-                                className="rounded border-slate-300 text-slate-900 focus:ring-slate-900"
-                            />
-                            Remember me
-                        </label>
-
-                        <a
-                            href="#"
-                            className="text-sm font-medium text-slate-900 hover:underline"
-                        >
-                            Forgot password?
-                        </a>
-                    </div>
-
-                    {/* Button */}
-                    <button
-                        type="submit"
-                        className="w-full bg-slate-900 text-white py-3 rounded-xl font-semibold shadow-md hover:bg-slate-800 transition duration-200"
+                    <Form
+                        form={form}
+                        layout="vertical"
+                        onFinish={onFinish}
+                        requiredMark={false}
                     >
-                        Login
-                    </button>
-                </form>
+                        <Form.Item
+                            label="Email"
+                            name="email"
+                            rules={[
+                                { required: true, message: "Email is required" },
+                                { type: "email", message: "Enter a valid email address" },
+                            ]}
+                        >
+                            <Input placeholder="you@example.com" size="large" />
+                        </Form.Item>
 
-                {/* Footer */}
-                <div className="mt-8 text-center text-sm text-slate-500">
-                    <p>
-                        © {new Date().getFullYear()} ERP Management System. All rights reserved.
+                        <Form.Item
+                            label="Password"
+                            name="password"
+                            rules={[
+                                { required: true, message: "Password is required" },
+                                { min: 6, message: "Password must be at least 6 characters" },
+                            ]}
+                        >
+                            <Input.Password
+                                placeholder="Enter your password"
+                                size="large"
+                                iconRender={(visible) =>
+                                    visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                                }
+                            />
+                        </Form.Item>
+
+                        <Form.Item className="mb-0">
+                            <Button
+                                type="primary"
+                                htmlType="submit"
+                                loading={isLoading}
+                                block
+                                size="large"
+                            >
+                                Sign In
+                            </Button>
+                        </Form.Item>
+                    </Form>
+
+                    <p className="text-sm text-center text-muted-foreground mt-6">
+                        Don&apos;t have an account?{" "}
+                        <Link
+                            to="/register"
+                            className="text-primary font-medium hover:underline"
+                        >
+                            Sign Up
+                        </Link>
+                    </p>
+
+                    <p className="text-xs text-center text-muted-foreground mt-3">
+                        <Link to="/admin/login" className="hover:underline">
+                            Admin and Super Admin Login
+                        </Link>
                     </p>
                 </div>
             </div>
