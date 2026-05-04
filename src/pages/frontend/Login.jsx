@@ -1,84 +1,128 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { Store } from "lucide-react";
 import { Button, Form, Input } from "antd";
+// import {
+// normalizeUserRole,
+// roleMap,
+// setUser,
+// } from "@/redux/features/auth/authSlice";
+import { toast } from "react-toastify";
+import { useLoginMutation } from "../../redux/features/auth/authApi";
+import { useAppDispatch } from "../../redux/hooks";
+import { setUser } from "../../redux/features/auth/authSlice";
 
-import { toast } from "@/components/ui/use-toast";
-import {
-    useLoginMutation,
-} from "@/redux/features/auth/authApi";
-import { useAppDispatch } from "@/redux/hooks";
-import {
-    normalizeUserRole,
-    roleMap,
-    setUser,
-} from "@/redux/features/auth/authSlice";
+// const getRedirectPath = (role) => {
+//     switch (normalizeUserRole(role)) {
+//         case roleMap.PROVIDER:
+//             return "/provider/dashboard";
+//         case roleMap.CUSTOMER:
+//             return "/";
+//         case roleMap.ADMIN:
+//             return "/admin/dashboard";
+//         case roleMap.SUPER_ADMIN:
+//             return "/super-admin/dashboard";
+//         default:
+//             return "/";
+//     }
+// };
 
-const getRedirectPath = (role) => {
-    switch (normalizeUserRole(role)) {
-        case roleMap.PROVIDER:
-            return "/provider/dashboard";
-        case roleMap.CUSTOMER:
-            return "/";
-        case roleMap.ADMIN:
-            return "/admin/dashboard";
-        case roleMap.SUPER_ADMIN:
-            return "/super-admin/dashboard";
-        default:
-            return "/";
-    }
-};
+// {
+//     "token": "11|V5iWbf0GSIKkSyAZG7EZ3R1JvAj8CBOk7e9IZ0dl3d316853",
+//     "user": {
+//         "id": 1,
+//         "name": "Admin User",
+//         "email": "admin@example.com",
+//         "email_verified_at": null,
+//         "created_at": "2026-04-23T14:34:39.000000Z",
+//         "updated_at": "2026-04-23T14:34:39.000000Z",
+//         "roles": [
+//             {
+//                 "id": 1,
+//                 "name": "admin",
+//                 "guard_name": "web",
+//                 "created_at": "2026-04-23T14:34:38.000000Z",
+//                 "updated_at": "2026-04-23T14:34:38.000000Z",
+//                 "pivot": {
+//                     "model_type": "App\\Models\\User",
+//                     "model_id": 1,
+//                     "role_id": 1
+//                 }
+//             }
+//         ]
+//     },
+//     "roles": [
+//         "admin"
+//     ]
+// }
 
 
 const Login = () => {
     const [form] = Form.useForm();
     const navigate = useNavigate();
-    const location = useLocation();
     const dispatch = useAppDispatch();
 
     const [login, { isLoading }] = useLoginMutation();
 
-    const from = location?.state?.from || "/";
+    // const role = useCurrentUserRole();
+    // console.log("Current user role in Login component:", role);
+
+    // const from = location?.state?.from || "/";
 
     const onFinish = async (values) => {
+        const loginUrl = `${import.meta.env.VITE_BASE_URL}/api/login`;
+
         try {
             const userInfo = {
                 email: values.email,
                 password: values.password,
             };
 
-            const res = await login(userInfo).unwrap();
-            const userRole = normalizeUserRole(res?.data?.user?.role);
+            console.log("Login request:", {
+                url: loginUrl,
+                payload: {
+                    ...userInfo,
+                    password: "********",
+                },
+            });
 
-            if (res?.success === true) {
+            const result = await login(userInfo);
+
+            console.log("Login mutation result:", result);
+
+            if (result.error) {
+                throw result.error;
+            }
+
+            const res = result.data;
+            // const userRole = normalizeUserRole(res?.data?.user?.role);
+
+            console.log("Login response:", res);
+
+            if (res?.user && res?.token) {
+                console.log("Login successful, user data:", res);
                 dispatch(
                     setUser({
-                        user: res.data.user,
-                        token: res.data.accessToken,
+                        user: res.user,
+                        token: res.token,
                     }),
                 );
 
-                toast({
-                    title: "Login successful",
-                    description: res.message || "You are now signed in.",
-                });
+                toast.success("Login successful!");
 
                 form.resetFields();
 
-                navigate(from !== "/" ? from : getRedirectPath(userRole), {
-                    replace: true,
-                });
+                navigate("/dashboard");
             }
         } catch (error) {
-            toast({
-                title: "Login failed",
-                description:
-                    error?.data?.errorMessage ||
-                    error?.data?.message ||
-                    "Something went wrong",
-                variant: "destructive",
-            });
+            console.error("Login request failed:", error);
+            toast.error(error?.data?.message || error?.error || "Login failed");
         }
+    };
+
+    const onFinishFailed = ({ errorFields }) => {
+        console.warn("Login form validation failed:", errorFields);
+        toast.error("Please enter a valid email and password.");
     };
 
     return (
@@ -97,7 +141,7 @@ const Login = () => {
                     </h2>
 
                     <p style={{ color: "hsl(220,14%,70%)" }}>
-                        Please enter your credentials to sign in as a customer or provider.
+                        Please enter your credentials to sign in.
                     </p>
                 </div>
             </div>
@@ -107,7 +151,7 @@ const Login = () => {
                     <div className="mb-8">
                         <Link to="/" className="flex items-center gap-2 mb-8 lg:hidden">
                             <Store className="h-7 w-7 text-primary" />
-                            <span className="text-xl font-bold">SmallShop</span>
+                            <span className="text-xl font-bold">Intelliops</span>
                         </Link>
 
                         <h1 className="text-2xl font-bold">Sign In</h1>
@@ -120,10 +164,11 @@ const Login = () => {
                         form={form}
                         layout="vertical"
                         onFinish={onFinish}
+                        onFinishFailed={onFinishFailed}
                         requiredMark={false}
                     >
                         <Form.Item
-                            label="Email"
+                            label={<div className="text-sm font-medium text-white">Email</div>}
                             name="email"
                             rules={[
                                 { required: true, message: "Email is required" },
@@ -134,7 +179,7 @@ const Login = () => {
                         </Form.Item>
 
                         <Form.Item
-                            label="Password"
+                            label={<div className="text-sm font-medium text-white">Password</div>}
                             name="password"
                             rules={[
                                 { required: true, message: "Password is required" },
@@ -170,12 +215,6 @@ const Login = () => {
                             className="text-primary font-medium hover:underline"
                         >
                             Sign Up
-                        </Link>
-                    </p>
-
-                    <p className="text-xs text-center text-muted-foreground mt-3">
-                        <Link to="/admin/login" className="hover:underline">
-                            Admin and Super Admin Login
                         </Link>
                     </p>
                 </div>

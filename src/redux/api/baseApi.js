@@ -2,10 +2,12 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { tagTypesList } from "../tagTypes";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: `${import.meta.env.VITE_BASE_URL}/`,
+  baseUrl: `${import.meta.env.VITE_BASE_URL}/api`,
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
-    const token = getState().auth.token;
+    headers.set("Accept", "application/json");
+
+    const token = getState()?.auth?.token;
     if (token) {
       headers.set("Authorization", `Bearer ${token}`);
     }

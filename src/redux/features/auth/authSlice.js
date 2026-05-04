@@ -23,5 +23,12 @@ const authSlice = createSlice({
 
 export const { setUser, logOut } = authSlice.actions;
 export default authSlice.reducer;
-export const useCurrentToken = (state) => state.auth.token;
-export const useCurrentUser = (state) => state.auth.user;
+
+const getAuthState = (state) => state?.auth ?? state ?? initialState;
+
+export const selectCurrentToken = (state) => getAuthState(state).token;
+export const selectCurrentUser = (state) => getAuthState(state).user;
+
+// Backward-compatible aliases for existing imports. Use these with useSelector.
+export const useCurrentToken = selectCurrentToken;
+export const useCurrentUser = selectCurrentUser;

@@ -1,6 +1,7 @@
-import { tagTypes } from "@/redux/tagTypes";
+// import { cleanObject } from "@/utils/cleanObject";
+
 import { baseApi } from "../../api/baseApi";
-import { cleanObject } from "@/utils/cleanObject";
+import { tagTypes } from "../../tagTypes";
 
 const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -15,6 +16,9 @@ const authApi = baseApi.injectEndpoints({
       query: (userInfo) => ({
         url: "/register",
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: userInfo,
       }),
     }),
@@ -22,6 +26,9 @@ const authApi = baseApi.injectEndpoints({
       query: (userInfo) => ({
         url: "/login",
         method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: userInfo,
       }),
     }),

@@ -1,6 +1,34 @@
 import React from 'react';
+import { logOut } from '../../redux/features/auth/authSlice';
+import { useNavigate } from 'react-router';
+import { useAppDispatch } from '../../redux/hooks';
+import { persistor } from '../../redux/store';
+import { baseApi } from '../../redux/api/baseApi';
+import { useLogoutMutation } from '../../redux/features/auth/authApi';
 
 const DashboardHeader = () => {
+
+    const navigate = useNavigate();
+    const dispatch = useAppDispatch();
+    const [logout, { isLoading }] = useLogoutMutation();
+
+    const handleLogout = async (event) => {
+        event.preventDefault();
+
+        try {
+            await logout(undefined).unwrap();
+        } catch (error) {
+            console.error("Logout request failed:", error);
+            // Still clear local auth if the server logout request fails.
+        } finally {
+            dispatch(logOut());
+            dispatch(baseApi.util.resetApiState());
+            await persistor.flush();
+            await persistor.purge();
+            navigate("/login", { replace: true });
+        }
+    };
+
     return (
         <nav className="navbar w-full bg-base-300">
             <label htmlFor="my-drawer-4" aria-label="open sidebar" className="btn btn-square btn-ghost">
@@ -10,7 +38,14 @@ const DashboardHeader = () => {
             <div className="px-4">Intelliops ERP</div>
             <div className="ml-auto">
                 {/* Logout button */}
-                <button className="btn btn-ghost">Logout</button>
+                <button
+                    type="button"
+                    className="btn btn-ghost"
+                    onClick={handleLogout}
+                    disabled={isLoading}
+                >
+                    {isLoading ? "Logging out..." : "Logout"}
+                </button>
             </div>
         </nav>
     );

@@ -1,6 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./features/auth/authSlice";
-import startupFilterReducer from "./features/startupIdea/startupIdeaSlice";
 import { baseApi } from "./api/baseApi";
 import {
   persistReducer,
@@ -12,7 +11,10 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+import storageModule from "redux-persist/lib/storage";
+
+// Vite can import redux-persist's CommonJS storage module as { default: storage }.
+const storage = storageModule.default ?? storageModule;
 
 const persistConfig = {
   key: "auth",
@@ -25,7 +27,6 @@ export const store = configureStore({
   reducer: {
     [baseApi.reducerPath]: baseApi.reducer,
     auth: persistedAuthReducer,
-    startupFilter: startupFilterReducer,
   },
   middleware: (getDefaultMiddlewares) =>
     getDefaultMiddlewares({
