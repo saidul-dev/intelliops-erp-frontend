@@ -65,43 +65,25 @@ const Login = () => {
 
     const [login, { isLoading }] = useLoginMutation();
 
-    // const role = useCurrentUserRole();
-    // console.log("Current user role in Login component:", role);
-
     const from = location.state?.from?.pathname || "/dashboard";
 
     const onFinish = async (values) => {
-        const loginUrl = `${import.meta.env.VITE_BASE_URL}/api/login`;
-
         try {
             const userInfo = {
                 email: values.email,
                 password: values.password,
             };
 
-            console.log("Login request:", {
-                url: loginUrl,
-                payload: {
-                    ...userInfo,
-                    password: "********",
-                },
-            });
-
             const result = await login(userInfo);
 
-            console.log("Login mutation result:", result);
 
             if (result.error) {
                 throw result.error;
             }
 
             const res = result.data;
-            // const userRole = normalizeUserRole(res?.data?.user?.role);
-
-            console.log("Login response:", res);
 
             if (res?.user && res?.token) {
-                console.log("Login successful, user data:", res);
                 dispatch(
                     setUser({
                         user: res.user,
