@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { EyeInvisibleOutlined, EyeTwoTone } from "@ant-design/icons";
 import { Store } from "lucide-react";
 import { Button, Form, Input } from "antd";
@@ -60,6 +60,7 @@ import { setUser } from "../../redux/features/auth/authSlice";
 const Login = () => {
     const [form] = Form.useForm();
     const navigate = useNavigate();
+    const location = useLocation();
     const dispatch = useAppDispatch();
 
     const [login, { isLoading }] = useLoginMutation();
@@ -67,7 +68,7 @@ const Login = () => {
     // const role = useCurrentUserRole();
     // console.log("Current user role in Login component:", role);
 
-    // const from = location?.state?.from || "/";
+    const from = location.state?.from?.pathname || "/dashboard";
 
     const onFinish = async (values) => {
         const loginUrl = `${import.meta.env.VITE_BASE_URL}/api/login`;
@@ -112,7 +113,7 @@ const Login = () => {
 
                 form.resetFields();
 
-                navigate("/dashboard");
+                navigate(from, { replace: true });
             }
         } catch (error) {
             console.error("Login request failed:", error);

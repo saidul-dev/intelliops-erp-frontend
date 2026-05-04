@@ -9,6 +9,8 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import Users from "../pages/dashboard/Users";
 import SiteSettings from "../pages/dashboard/admin/SiteSettings";
 import AdminRoute from "./AdminRoute";
+import PrivateRoute from "./PrivateRoute";
+import PublicRoute from "./PublicRoute";
 
 export const router = createBrowserRouter([
     {
@@ -22,11 +24,11 @@ export const router = createBrowserRouter([
     },
     {
         path: "/login",
-        element: <Login />
+        element: <PublicRoute><Login /></PublicRoute>
     },
     {
         path: "/dashboard",
-        element: <DashboardLayout />,
+        element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
         children: [
             { path: "", element: <Dashboard /> },
             { path: "users", element: <Users /> },

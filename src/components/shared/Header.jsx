@@ -1,7 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router';
+import { selectCurrentUser } from '../../redux/features/auth/authSlice';
+import { useAppSelector } from '../../redux/hooks';
 
 const Header = () => {
+    const user = useAppSelector(selectCurrentUser);
+    console.log("Current user in Header:", user);
     return (
         <div className="navbar bg-base-100 shadow-sm">
             <div className="navbar-start">
@@ -17,8 +21,9 @@ const Header = () => {
                 </ul>
             </div>
             <div className="navbar-end">
-                <Link to="/login" className="btn mr-2">Login</Link>
-                <Link to="/dashboard" className="btn">Dashboard</Link>
+                {
+                    user ? <Link to="/dashboard" className="btn">Dashboard</Link> : <Link to="/login" className="btn mr-2">Login</Link>
+                }
             </div>
         </div>
     );
