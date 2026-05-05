@@ -11,6 +11,7 @@ import SiteSettings from "../pages/dashboard/admin/SiteSettings";
 import AdminRoute from "./AdminRoute";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
+import Categories from "../pages/dashboard/Categories";
 
 export const router = createBrowserRouter([
     {
@@ -33,6 +34,7 @@ export const router = createBrowserRouter([
             { path: "", element: <Dashboard /> },
             { path: "users", element: <Users /> },
             { path: "settings", element: <AdminRoute><SiteSettings /></AdminRoute> },
+            { path: "categories", element: <Categories /> },
         ]
     },
     {
