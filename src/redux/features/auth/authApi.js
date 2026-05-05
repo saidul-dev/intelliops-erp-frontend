@@ -1,5 +1,3 @@
-// import { cleanObject } from "@/utils/cleanObject";
-
 import { baseApi } from "../../api/baseApi";
 import { tagTypes } from "../../tagTypes";
 
@@ -16,9 +14,6 @@ const authApi = baseApi.injectEndpoints({
       query: (userInfo) => ({
         url: "/register",
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: userInfo,
       }),
     }),
@@ -26,9 +21,6 @@ const authApi = baseApi.injectEndpoints({
       query: (userInfo) => ({
         url: "/login",
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
         body: userInfo,
       }),
     }),

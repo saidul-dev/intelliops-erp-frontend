@@ -3,7 +3,7 @@ import { tagTypesList } from "../tagTypes";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: `${import.meta.env.VITE_BASE_URL}/api`,
-  credentials: "include",
+  // credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     headers.set("Accept", "application/json");
 

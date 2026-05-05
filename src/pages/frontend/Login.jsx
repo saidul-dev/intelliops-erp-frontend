@@ -12,50 +12,6 @@ import { useLoginMutation } from "../../redux/features/auth/authApi";
 import { useAppDispatch } from "../../redux/hooks";
 import { setUser } from "../../redux/features/auth/authSlice";
 
-// const getRedirectPath = (role) => {
-//     switch (normalizeUserRole(role)) {
-//         case roleMap.PROVIDER:
-//             return "/provider/dashboard";
-//         case roleMap.CUSTOMER:
-//             return "/";
-//         case roleMap.ADMIN:
-//             return "/admin/dashboard";
-//         case roleMap.SUPER_ADMIN:
-//             return "/super-admin/dashboard";
-//         default:
-//             return "/";
-//     }
-// };
-
-// {
-//     "token": "11|V5iWbf0GSIKkSyAZG7EZ3R1JvAj8CBOk7e9IZ0dl3d316853",
-//     "user": {
-//         "id": 1,
-//         "name": "Admin User",
-//         "email": "admin@example.com",
-//         "email_verified_at": null,
-//         "created_at": "2026-04-23T14:34:39.000000Z",
-//         "updated_at": "2026-04-23T14:34:39.000000Z",
-//         "roles": [
-//             {
-//                 "id": 1,
-//                 "name": "admin",
-//                 "guard_name": "web",
-//                 "created_at": "2026-04-23T14:34:38.000000Z",
-//                 "updated_at": "2026-04-23T14:34:38.000000Z",
-//                 "pivot": {
-//                     "model_type": "App\\Models\\User",
-//                     "model_id": 1,
-//                     "role_id": 1
-//                 }
-//             }
-//         ]
-//     },
-//     "roles": [
-//         "admin"
-//     ]
-// }
-
 
 const Login = () => {
     const [form] = Form.useForm();
@@ -67,21 +23,14 @@ const Login = () => {
 
     const from = location.state?.from?.pathname || "/dashboard";
 
-    const onFinish = async (values) => {
+    const handleLogin = async (values) => {
+
         try {
-            const userInfo = {
-                email: values.email,
-                password: values.password,
-            };
 
-            const result = await login(userInfo);
+            const res = await login(values).unwrap();
 
 
-            if (result.error) {
-                throw result.error;
-            }
-
-            const res = result.data;
+            console.log("Login result:", res);
 
             if (res?.user && res?.token) {
                 dispatch(
@@ -103,11 +52,6 @@ const Login = () => {
         }
     };
 
-    const onFinishFailed = ({ errorFields }) => {
-        console.warn("Login form validation failed:", errorFields);
-        toast.error("Please enter a valid email and password.");
-    };
-
     return (
         <div className="min-h-screen flex">
             <div className="hidden lg:flex flex-1 gradient-hero items-center justify-center p-12">
@@ -118,7 +62,6 @@ const Login = () => {
 
                     <h2
                         className="text-3xl font-bold mb-4"
-                        style={{ color: "hsl(0,0%,100%)" }}
                     >
                         Welcome Back
                     </h2>
@@ -146,12 +89,11 @@ const Login = () => {
                     <Form
                         form={form}
                         layout="vertical"
-                        onFinish={onFinish}
-                        onFinishFailed={onFinishFailed}
+                        onFinish={handleLogin}
                         requiredMark={false}
                     >
                         <Form.Item
-                            label={<div className="text-sm font-medium text-white">Email</div>}
+                            label="Email"
                             name="email"
                             rules={[
                                 { required: true, message: "Email is required" },
@@ -162,7 +104,7 @@ const Login = () => {
                         </Form.Item>
 
                         <Form.Item
-                            label={<div className="text-sm font-medium text-white">Password</div>}
+                            label="Password"
                             name="password"
                             rules={[
                                 { required: true, message: "Password is required" },

@@ -5,7 +5,6 @@ import { useAppSelector } from '../../redux/hooks';
 
 const Header = () => {
     const user = useAppSelector(selectCurrentUser);
-    console.log("Current user in Header:", user);
     return (
         <div className="navbar bg-base-100 shadow-sm">
             <div className="navbar-start">
