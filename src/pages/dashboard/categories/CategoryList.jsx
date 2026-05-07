@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { useGetCategoriesQuery } from "../../redux/features/categories/categoriesApi";
-import AntdTable from "../../components/ui/AntdTable";
+import { useGetCategoriesQuery } from "../../../redux/features/categories/categoriesApi";
+import AntdTable from "../../../components/ui/AntdTable";
 import { Link } from "react-router";
 import { Tag } from "antd";
 
-const CategoriesPage = () => {
+const CategoryList = () => {
     const [queryParams, setQueryParams] = useState({
         page: 1,
         per_page: 10,
@@ -89,4 +89,4 @@ const CategoriesPage = () => {
     );
 };
 
-export default CategoriesPage;
+export default CategoryList;

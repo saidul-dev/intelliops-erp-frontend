@@ -17,7 +17,7 @@ const categoriesApi = baseApi.injectEndpoints({
         }),
         storeCategory: builder.mutation({
             query: (payload) => ({
-                url: "/categories/store",
+                url: "/categories",
                 method: "POST",
                 body: payload,
             }),
