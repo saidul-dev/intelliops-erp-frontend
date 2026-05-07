@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { useGetCategoriesQuery } from "../../../redux/features/categories/categoriesApi";
+import { useGetCategoriesQuery, useDeleteCategoryMutation } from "../../../redux/features/categories/categoriesApi";
 import AntdTable from "../../../components/ui/AntdTable";
 import { Link } from "react-router";
-import { Tag } from "antd";
+import { message, Popconfirm, Tag } from "antd";
 
 const CategoryList = () => {
     const [queryParams, setQueryParams] = useState({
@@ -12,6 +12,17 @@ const CategoryList = () => {
 
     /* ================= RTK QUERY ================= */
     const { data, isLoading } = useGetCategoriesQuery(queryParams);
+    const [deleteCategory, { isLoading: deleteLoading }] = useDeleteCategoryMutation();
+
+    /* ================= HANDLERS ================= */
+    const handleDelete = async (id) => {
+        try {
+            await deleteCategory(id).unwrap();
+            message.success("Category deleted successfully");
+        } catch (error) {
+            message.error(error?.data?.message || "Delete failed");
+        }
+    };
 
     /* ================= COLUMNS ================= */
     const columns = [
@@ -63,13 +74,23 @@ const CategoryList = () => {
             render: (_, record) => {
                 return (
                     <div className="flex justify-end gap-2">
+
                         <button className="btn btn-sm btn-primary">
                             Edit
                         </button>
 
-                        <button className="btn btn-sm btn-danger">
-                            Delete
-                        </button>
+                        <Popconfirm
+                            title="Delete Category"
+                            description="Are you sure you want to delete this category?"
+                            okText="Yes"
+                            cancelText="No"
+                            onConfirm={() => handleDelete(record.id)}
+                        >
+                            <button className="btn btn-sm btn-danger">
+                                Delete
+                            </button>
+                        </Popconfirm>
+
                     </div>
                 );
             }
