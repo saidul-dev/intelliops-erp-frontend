@@ -18,6 +18,7 @@ const CategoriesPage = () => {
         {
             title: "Name",
             dataIndex: "name",
+            align: "center",
             render: (value, record) => <div>
                 <Link to={`/categories/${record.id}`}>{value}</Link>
             </div>
@@ -25,35 +26,44 @@ const CategoriesPage = () => {
         {
             title: "Slug",
             dataIndex: "slug",
+            align: "center"
         },
         {
             title: "Status",
             dataIndex: "is_active",
+            align: "center",
             render: (value) => <Tag color={value ? "green" : "red"}>{value ? "Active" : "Inactive"}</Tag>,
         },
         {
             title: "Created At",
             dataIndex: "created_at",
+            align: "center",
             render: (value) =>
                 value ? new Date(value).toLocaleDateString() : "-",
         },
         {
             title: "Actions",
             dataIndex: "actions",
+            align: "right",
             render: (_, record) => {
                 return (
-                    <div className="flex gap-2">
-                        <button className="btn btn-sm btn-primary">Edit</button>
-                        <button className="btn btn-sm btn-danger">Delete</button>
+                    <div className="flex justify-end gap-2">
+                        <button className="btn btn-sm btn-primary">
+                            Edit
+                        </button>
+
+                        <button className="btn btn-sm btn-danger">
+                            Delete
+                        </button>
                     </div>
-                )
+                );
             }
         }
     ];
 
 
     return (
-        <div style={{ padding: 20 }}>
+        <div style={{ padding: 20 }} className="relative z-0">
             <h2 className="mb-6 text-3xl font-semibold">Categories</h2>
 
             <AntdTable

@@ -179,23 +179,25 @@ const AntdTable = ({
                 strategy={horizontalListSortingStrategy}
             >
                 <DragContext.Provider value={dragState}>
-                    <Table
-                        rowKey={(record) => record.id || record.key}
-                        columns={tableColumns}
-                        dataSource={data}
-                        loading={loading}
-                        pagination={paginationConfig}
-                        onChange={handleTableChange}
-                        expandable={
-                            expandable
-                                ? { childrenColumnName: "children" }
-                                : undefined
-                        }
-                        components={{
-                            header: { cell: HeaderCell },
-                            body: { cell: BodyCell },
-                        }}
-                    />
+                    <div className="rounded bg-white shadow-sm overflow-hidden">
+                        <Table
+                            rowKey={(record) => record.id || record.key}
+                            columns={tableColumns}
+                            dataSource={data}
+                            loading={loading}
+                            pagination={paginationConfig}
+                            onChange={handleTableChange}
+                            expandable={
+                                expandable
+                                    ? { childrenColumnName: "children" }
+                                    : undefined
+                            }
+                            components={{
+                                header: { cell: HeaderCell },
+                                body: { cell: BodyCell },
+                            }}
+                        />
+                    </div>
                 </DragContext.Provider>
             </SortableContext>
 
