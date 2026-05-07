@@ -64,7 +64,18 @@ const CategoriesPage = () => {
 
     return (
         <div style={{ padding: 20 }} className="relative z-0">
-            <h2 className="mb-6 text-3xl font-semibold">Categories</h2>
+            <div className="mb-6 flex items-center justify-between">
+                <h2 className="text-3xl font-semibold">
+                    Categories
+                </h2>
+
+                <Link
+                    to="/dashboard/categories/create"
+                    className="btn btn-primary"
+                >
+                    + Create Category
+                </Link>
+            </div>
 
             <AntdTable
                 columns={columns}
