@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useGetCategoriesQuery, useStoreCategoryMutation } from "../../../redux/features/categories/categoriesApi";
-import { message, Select, Input, Button, Upload } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
+import { message, Select, Input, Button } from "antd";
+import { useNavigate } from "react-router";
 
 const CategoryCreate = () => {
+    const navigate = useNavigate();
     const [form, setForm] = useState({
         name: "",
         parent_id: null,
@@ -26,7 +27,6 @@ const CategoryCreate = () => {
         }
     }, [data]);
 
-    /* ================= HANDLERS ================= */
     const handleChange = (key, value) => {
         setForm((prev) => ({
             ...prev,
@@ -65,66 +65,85 @@ const CategoryCreate = () => {
                 parent_id: null,
                 image: null,
             });
+
+            navigate("/dashboard/categories");
         } catch (error) {
             message.error(error?.data?.message || "Failed to create category");
         }
     };
 
     return (
-        <div className="max-w-xl bg-white p-6 rounded shadow">
-            <h1 className="text-2xl font-bold mb-6">Create New Category</h1>
+        <div className="w-full px-6">
+            {/* Header */}
+            <div className="mb-6">
+                <h1 className="text-3xl font-bold">Create New Category</h1>
+                <p className="text-gray-500">
+                    Add a new category with parent and image
+                </p>
+            </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Form Container */}
+            <div className="w-full bg-white p-8 rounded-lg shadow">
+                <form onSubmit={handleSubmit} className="space-y-6">
 
-                {/* Category Name */}
-                <div>
-                    <label className="block mb-1 font-medium">
-                        Category Name
-                    </label>
-                    <Input
-                        value={form.name}
-                        onChange={(e) => handleChange("name", e.target.value)}
-                        placeholder="Enter category name"
-                    />
-                </div>
+                    {/* Parent Category */}
+                    <div>
+                        <label className="block mb-2 font-medium">
+                            Parent Category
+                        </label>
+                        <Select
+                            size="large"
+                            className="w-full"
+                            placeholder="Select parent category"
+                            allowClear
+                            value={form.parent_id}
+                            onChange={(value) => handleChange("parent_id", value)}
+                            options={parentOptions}
+                        />
+                    </div>
 
-                {/* Parent Category */}
-                <div>
-                    <label className="block mb-1 font-medium">
-                        Parent Category
-                    </label>
-                    <Select
-                        className="w-full"
-                        placeholder="Select parent category"
-                        allowClear
-                        value={form.parent_id}
-                        onChange={(value) => handleChange("parent_id", value)}
-                        options={parentOptions}
-                    />
-                </div>
+                    {/* Category Name */}
+                    <div>
+                        <label className="block mb-2 font-medium">
+                            Category Name
+                        </label>
+                        <Input
+                            size="large"
+                            value={form.name}
+                            onChange={(e) => handleChange("name", e.target.value)}
+                            placeholder="Enter category name"
+                            className="w-full"
+                        />
+                    </div>
 
-                {/* Image Upload */}
-                <div>
-                    <label className="block mb-1 font-medium">
-                        Category Image
-                    </label>
-                    <input
-                        type="file"
-                        onChange={handleImageChange}
-                        className="w-full border p-2 rounded"
-                    />
-                </div>
 
-                {/* Submit */}
-                <Button
-                    type="primary"
-                    htmlType="submit"
-                    loading={isLoading}
-                    className="w-full"
-                >
-                    Create Category
-                </Button>
-            </form>
+                    {/* Image Upload */}
+                    <div>
+                        <label className="block mb-2 font-medium">
+                            Category Image
+                        </label>
+                        <input
+                            type="file"
+                            onChange={handleImageChange}
+                            className="w-full border p-3 rounded"
+                        />
+                    </div>
+
+                    {/* Submit */}
+                    <div className="pt-4">
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            loading={isLoading}
+                            size="large"
+                            className="w-full"
+                        >
+                            Create Category
+                        </Button>
+                    </div>
+
+                </form>
+            </div>
         </div>
     );
 };
