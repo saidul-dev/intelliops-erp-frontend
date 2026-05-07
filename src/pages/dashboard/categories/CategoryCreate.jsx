@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { useGetCategoriesQuery, useStoreCategoryMutation } from "../../../redux/features/categories/categoriesApi";
+import {
+    useGetCategoriesQuery,
+    useStoreCategoryMutation
+} from "../../../redux/features/categories/categoriesApi";
+
 import { message, Select, Input, Button } from "antd";
 import { useNavigate } from "react-router";
 
 const CategoryCreate = () => {
     const navigate = useNavigate();
+
     const [form, setForm] = useState({
         name: "",
         parent_id: null,
         image: null,
+        description: "",
     });
 
     const { data } = useGetCategoriesQuery({ page: 1, per_page: 1000 });
@@ -52,6 +58,10 @@ const CategoryCreate = () => {
                 formData.append("parent_id", form.parent_id);
             }
 
+            if (form.description) {
+                formData.append("description", form.description);
+            }
+
             if (form.image) {
                 formData.append("image", form.image);
             }
@@ -64,6 +74,7 @@ const CategoryCreate = () => {
                 name: "",
                 parent_id: null,
                 image: null,
+                description: "",
             });
 
             navigate("/dashboard/categories");
@@ -74,50 +85,74 @@ const CategoryCreate = () => {
 
     return (
         <div className="w-full px-6">
+
             {/* Header */}
             <div className="mb-6">
                 <h1 className="text-3xl font-bold">Create New Category</h1>
                 <p className="text-gray-500">
-                    Add a new category with parent and image
+                    Add category with parent, image and description
                 </p>
             </div>
 
             {/* Form Container */}
             <div className="w-full bg-white p-8 rounded-lg shadow">
+
                 <form onSubmit={handleSubmit} className="space-y-6">
 
-                    {/* Parent Category */}
+                    {/* ===== ROW (3 FIELDS) ===== */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                        {/* Parent */}
+                        <div>
+                            <label className="block mb-2 font-medium">
+                                Parent Category
+                            </label>
+                            <Select
+                                size="large"
+                                className="w-full"
+                                placeholder="Select parent"
+                                allowClear
+                                value={form.parent_id}
+                                onChange={(value) =>
+                                    handleChange("parent_id", value)
+                                }
+                                options={parentOptions}
+                            />
+                        </div>
+
+                        {/* Name */}
+                        <div>
+                            <label className="block mb-2 font-medium">
+                                Category Name
+                            </label>
+                            <Input
+                                size="large"
+                                value={form.name}
+                                onChange={(e) =>
+                                    handleChange("name", e.target.value)
+                                }
+                                placeholder="Enter name"
+                            />
+                        </div>
+                    </div>
+
+                    {/* ===== DESCRIPTION FULL WIDTH ===== */}
                     <div>
                         <label className="block mb-2 font-medium">
-                            Parent Category
+                            Description
                         </label>
-                        <Select
+
+                        <Input.TextArea
                             size="large"
+                            rows={5}
+                            value={form.description}
+                            onChange={(e) => handleChange("description", e.target.value)}
+                            placeholder="Enter category description"
                             className="w-full"
-                            placeholder="Select parent category"
-                            allowClear
-                            value={form.parent_id}
-                            onChange={(value) => handleChange("parent_id", value)}
-                            options={parentOptions}
                         />
                     </div>
 
-                    {/* Category Name */}
-                    <div>
-                        <label className="block mb-2 font-medium">
-                            Category Name
-                        </label>
-                        <Input
-                            size="large"
-                            value={form.name}
-                            onChange={(e) => handleChange("name", e.target.value)}
-                            placeholder="Enter category name"
-                            className="w-full"
-                        />
-                    </div>
-
-
-                    {/* Image Upload */}
+                    {/* Image */}
                     <div>
                         <label className="block mb-2 font-medium">
                             Category Image
@@ -130,7 +165,7 @@ const CategoryCreate = () => {
                     </div>
 
                     {/* Submit */}
-                    <div className="pt-4">
+                    <div className="pt-6">
                         <Button
                             type="primary"
                             htmlType="submit"
