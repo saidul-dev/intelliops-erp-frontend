@@ -165,16 +165,26 @@ const CategoryCreate = () => {
                     </div>
 
                     {/* Submit */}
-                    <div className="pt-6">
+                    <div className="flex justify-end gap-3 pt-6">
+
+                        {/* Back Button */}
+                        <Button
+                            size="large"
+                            onClick={() => navigate("/dashboard/categories")}
+                        >
+                            Back
+                        </Button>
+
+                        {/* Create Button */}
                         <Button
                             type="primary"
                             htmlType="submit"
                             loading={isLoading}
                             size="large"
-                            className="w-full"
                         >
-                            Create Category
+                            Create
                         </Button>
+
                     </div>
 
                 </form>
