@@ -24,6 +24,21 @@ const CategoryList = () => {
             </div>
         },
         {
+            title: "Image",
+            dataIndex: "image_url",
+            align: "center",
+            render: (value) =>
+                value ? (
+                    <img
+                        src={value}
+                        alt="category"
+                        className="w-12 h-12 object-cover rounded mx-auto"
+                    />
+                ) : (
+                    "-"
+                ),
+        },
+        {
             title: "Slug",
             dataIndex: "slug",
             align: "center"
