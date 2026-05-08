@@ -99,7 +99,7 @@ const DashboardSidebar = () => {
 
                     {menus.map((menu) => {
 
-                        const isActive = location.pathname === menu.path;
+                        const isActive = location.pathname.split("/")[2] === menu.path.split("/")[2];
 
                         return (
                             <li key={menu.path}>
