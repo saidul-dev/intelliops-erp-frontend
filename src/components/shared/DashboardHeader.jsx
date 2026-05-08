@@ -19,7 +19,6 @@ const DashboardHeader = () => {
             await logout(undefined).unwrap();
         } catch (error) {
             console.error("Logout request failed:", error);
-            // Still clear local auth if the server logout request fails.
         } finally {
             dispatch(logOut());
             dispatch(baseApi.util.resetApiState());
@@ -30,22 +29,109 @@ const DashboardHeader = () => {
     };
 
     return (
-        <nav className="navbar w-full bg-base-300">
-            <label htmlFor="my-drawer-4" aria-label="open sidebar" className="btn btn-square btn-ghost">
-                {/* Sidebar toggle icon */}
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M4 4m0 2a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2z"></path><path d="M9 4v16"></path><path d="M14 10l2 2l-2 2"></path></svg>
-            </label>
-            <div className="px-4">Intelliops ERP</div>
-            <div className="ml-auto">
-                {/* Logout button */}
-                <button
-                    type="button"
-                    className="btn btn-ghost"
-                    onClick={handleLogout}
-                    disabled={isLoading}
-                >
-                    {isLoading ? "Logging out..." : "Logout"}
-                </button>
+        <nav className="sticky top-0 z-40 h-16 border-b border-base-300 bg-base-100/90 backdrop-blur">
+            <div className="navbar px-4 lg:px-6">
+
+                {/* Left */}
+                <div className="flex items-center gap-3">
+
+                    <label
+                        htmlFor="my-drawer-4"
+                        aria-label="open sidebar"
+                        className="btn btn-ghost btn-circle lg:hidden"
+                    >
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            className="size-5"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M4 6h16M4 12h16M4 18h16"
+                            />
+                        </svg>
+                    </label>
+
+                    <div>
+                        <h1 className="text-lg lg:text-xl font-bold">
+                            IntelliOps ERP
+                        </h1>
+                        <p className="text-xs text-base-content/60 hidden sm:block">
+                            Smart Business Management System
+                        </p>
+                    </div>
+                </div>
+
+                {/* Right */}
+                <div className="ml-auto flex items-center gap-3">
+
+                    {/* Notification */}
+                    <button className="btn btn-ghost btn-circle">
+                        <div className="indicator">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                className="size-5"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    d="M15 17h5l-1.4-1.4A2 2 0 0 1 18 14.2V11a6 6 0 1 0-12 0v3.2a2 2 0 0 1-.6 1.4L4 17h5m6 0v1a3 3 0 1 1-6 0v-1m6 0H9"
+                                />
+                            </svg>
+
+                            <span className="badge badge-xs badge-primary indicator-item"></span>
+                        </div>
+                    </button>
+
+                    {/* Profile */}
+                    <div className="dropdown dropdown-end">
+                        <div
+                            tabIndex={0}
+                            role="button"
+                            className="flex items-center gap-3 cursor-pointer"
+                        >
+                            <div className="avatar placeholder">
+                                <div className="bg-primary text-primary-content rounded-full w-10">
+                                    <span className="font-semibold">SA</span>
+                                </div>
+                            </div>
+
+                            <div className="hidden md:block">
+                                <h3 className="font-semibold leading-none">
+                                    Super Admin
+                                </h3>
+                                <p className="text-xs text-base-content/60 mt-1">
+                                    Administrator
+                                </p>
+                            </div>
+                        </div>
+
+                        <ul
+                            tabIndex={0}
+                            className="menu dropdown-content mt-3 z-[1] p-2 shadow-lg bg-base-100 rounded-box w-52 border border-base-300"
+                        >
+                            <li>
+                                <button
+                                    type="button"
+                                    onClick={handleLogout}
+                                    disabled={isLoading}
+                                    className="text-error"
+                                >
+                                    {isLoading ? "Logging out..." : "Logout"}
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
             </div>
         </nav>
     );

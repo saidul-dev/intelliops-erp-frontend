@@ -1,89 +1,141 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 import { UserRole } from '../../constants';
 
 const DashboardSidebar = () => {
+
+    const location = useLocation();
+
+    const menus = [
+        {
+            name: "Dashboard",
+            path: "/dashboard",
+            icon: (
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="size-5">
+                    <path d="M3 13h8V3H3v10Z"></path>
+                    <path d="M13 21h8v-6h-8v6Z"></path>
+                    <path d="M13 3v8h8V3h-8Z"></path>
+                    <path d="M3 21h8v-4H3v4Z"></path>
+                </svg>
+            )
+        },
+        {
+            name: "Users",
+            path: "/dashboard/users",
+            icon: (
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="size-5">
+                    <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="8.5" cy="7" r="4"></circle>
+                    <path d="M20 8v6"></path>
+                    <path d="M23 11h-6"></path>
+                </svg>
+            )
+        },
+        {
+            name: "Categories",
+            path: "/dashboard/categories",
+            icon: (
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="size-5">
+                    <path d="M4 4h6v6H4z"></path>
+                    <path d="M14 4h6v6h-6z"></path>
+                    <path d="M4 14h6v6H4z"></path>
+                    <path d="M14 14h6v6h-6z"></path>
+                </svg>
+            )
+        }
+    ];
+
+    if (UserRole === "admin") {
+        menus.push({
+            name: "Settings",
+            path: "/dashboard/settings",
+            icon: (
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="size-5">
+                    <path d="M12 2v4"></path>
+                    <path d="M12 18v4"></path>
+                    <path d="M4.93 4.93l2.83 2.83"></path>
+                    <path d="M16.24 16.24l2.83 2.83"></path>
+                    <path d="M2 12h4"></path>
+                    <path d="M18 12h4"></path>
+                    <path d="M4.93 19.07l2.83-2.83"></path>
+                    <path d="M16.24 7.76l2.83-2.83"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+            )
+        });
+    }
+
     return (
-        <div className="drawer-side is-drawer-close:overflow-visible">
-            <label htmlFor="my-drawer-4" aria-label="close sidebar" className="drawer-overlay"></label>
-            <div className="flex min-h-full flex-col items-start bg-base-200 is-drawer-close:w-14 is-drawer-open:w-64">
-                <div className="min-h-[64px] w-full border-b">
-                    {/* Logo */}
-                    <div className="flex items-center gap-2 px-4 py-3">
-                        <svg xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="currentColor"
-                            className="w-10 h-10 text-slate-900"
-                        >
-                            <path
-                                fillRule="evenodd"
-                                d="M12 2.25a5.25 5.25 0 1 0 0 10.5 5.25 5.25 0 0 0 0-10.5ZM6.75 18a5.25 5.25 0 0 1 10.5 0v.75a.75.75 0 0 0 1.5 0V18a6.75 6.75 0 0 0-13.5 0v.75a.75.75 0 0 0 1.5 0V18Z"
-                                clipRule="evenodd"
-                            />
-                        </svg>
-                        <span className="is-drawer-close:hidden font-bold">Super Admin</span>
+        <div className="drawer-side z-50">
+            <label
+                htmlFor="my-drawer-4"
+                aria-label="close sidebar"
+                className="drawer-overlay"
+            ></label>
+
+            <aside className="w-72 min-h-full bg-base-100 border-r border-base-300 flex flex-col">
+
+                {/* Logo */}
+                <div className="h-16 border-b border-base-300 flex items-center px-6">
+                    <div className="flex items-center gap-3">
+
+                        <div className="w-10 h-10 rounded-xl bg-primary text-primary-content flex items-center justify-center font-bold text-lg shadow">
+                            IP
+                        </div>
+
+                        <div>
+                            <h2 className="font-bold text-lg leading-none">
+                                IntelliOps
+                            </h2>
+                            <p className="text-xs text-base-content/60 mt-1">
+                                ERP Dashboard
+                            </p>
+                        </div>
                     </div>
                 </div>
-                {/* Sidebar content here */}
-                <ul className="menu w-full grow">
-                    {/* List item */}
-                    <li>
-                        <Link to={"/dashboard"} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Dashboard">
-                            {/* Home icon */}
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
-                            <span className="is-drawer-close:hidden">Dashboard</span>
-                        </Link>
-                    </li>
 
-                    {/* List item */}
-                    <li>
-                        <Link to={"/dashboard/users"} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Users">
-                            {/* Users icon */}
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM12 14a7 7 0 0 0-7 7h14a7 7 0 0 0-7-7z"></path></svg>
-                            <span className="is-drawer-close:hidden">Users</span>
-                        </Link>
-                    </li>
+                {/* Menu */}
+                <ul className="menu p-4 w-full flex-1 gap-2">
 
-                    {/* Categories */}
-                    <li>
-                        <Link
-                            to={"/dashboard/categories"}
-                            className="is-drawer-close:tooltip is-drawer-close:tooltip-right"
-                            data-tip="Categories"
-                        >
-                            {/* Categories icon */}
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                strokeLinejoin="round"
-                                strokeLinecap="round"
-                                strokeWidth="2"
-                                fill="none"
-                                stroke="currentColor"
-                                className="my-1.5 inline-block size-4"
-                            >
-                                <path d="M4 4h6v6H4z"></path>
-                                <path d="M14 4h6v6h-6z"></path>
-                                <path d="M4 14h6v6H4z"></path>
-                                <path d="M14 14h6v6h-6z"></path>
-                            </svg>
+                    {menus.map((menu) => {
 
-                            <span className="is-drawer-close:hidden">Categories</span>
-                        </Link>
-                    </li>
+                        const isActive = location.pathname === menu.path;
 
-                    {/* Site Settings */}
-                    {UserRole === 'admin' && <li>
-                        <Link to={"/dashboard/settings"} className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Settings">
-                            {/* Settings icon */}
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" strokeLinejoin="round" strokeLinecap="round" strokeWidth="2" fill="none" stroke="currentColor" className="my-1.5 inline-block size-4"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
-                            <span className="is-drawer-close:hidden">Settings</span>
-                        </Link>
-                    </li>
-                    }
+                        return (
+                            <li key={menu.path}>
+                                <Link
+                                    to={menu.path}
+                                    className={`
+                                        flex items-center gap-3 rounded-xl px-4 py-3 transition-all duration-200
+                                        ${isActive
+                                            ? 'bg-primary text-primary-content font-medium'
+                                            : 'hover:bg-base-200'
+                                        }
+                                    `}
+                                >
+                                    {menu.icon}
 
+                                    <span>{menu.name}</span>
+                                </Link>
+                            </li>
+                        );
+                    })}
                 </ul>
-            </div>
+
+                {/* Footer */}
+                <div className="p-4 border-t border-base-300">
+                    <div className="rounded-xl bg-base-200 p-4">
+                        <p className="text-sm font-medium">
+                            IntelliOps ERP
+                        </p>
+
+                        <p className="text-xs text-base-content/60 mt-1">
+                            Version 1.0.0
+                        </p>
+                    </div>
+                </div>
+
+            </aside>
         </div>
     );
 };
