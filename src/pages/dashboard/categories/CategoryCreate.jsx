@@ -4,10 +4,25 @@ import {
     useStoreCategoryMutation
 } from "../../../redux/features/categories/categoriesApi";
 
-import { message, Select, Input, Button } from "antd";
-import { useNavigate } from "react-router";
+import {
+    message,
+    Select,
+    Input,
+    Button,
+    Upload,
+    Card,
+    Breadcrumb
+} from "antd";
+
+import {
+    UploadOutlined,
+    AppstoreAddOutlined
+} from "@ant-design/icons";
+
+import { Link, useNavigate } from "react-router";
 
 const CategoryCreate = () => {
+
     const navigate = useNavigate();
 
     const [form, setForm] = useState({
@@ -17,12 +32,21 @@ const CategoryCreate = () => {
         description: "",
     });
 
-    const { data } = useGetCategoriesQuery({ page: 1, per_page: 1000 });
-    const [storeCategory, { isLoading }] = useStoreCategoryMutation();
+    const [preview, setPreview] = useState(null);
+
+    const { data } = useGetCategoriesQuery({
+        page: 1,
+        per_page: 1000
+    });
+
+    const [storeCategory, { isLoading }] =
+        useStoreCategoryMutation();
 
     const [parentOptions, setParentOptions] = useState([]);
 
+    /* ================= PARENT OPTIONS ================= */
     useEffect(() => {
+
         if (data?.data) {
             setParentOptions(
                 data.data.map((cat) => ({
@@ -31,8 +55,10 @@ const CategoryCreate = () => {
                 }))
             );
         }
+
     }, [data]);
 
+    /* ================= HANDLE CHANGE ================= */
     const handleChange = (key, value) => {
         setForm((prev) => ({
             ...prev,
@@ -40,18 +66,28 @@ const CategoryCreate = () => {
         }));
     };
 
-    const handleImageChange = (e) => {
+    /* ================= IMAGE CHANGE ================= */
+    const handleImageChange = ({ file }) => {
+
         setForm((prev) => ({
             ...prev,
-            image: e.target.files[0],
+            image: file,
         }));
+
+        if (file) {
+            setPreview(URL.createObjectURL(file));
+        }
     };
 
+    /* ================= SUBMIT ================= */
     const handleSubmit = async (e) => {
+
         e.preventDefault();
 
         try {
+
             const formData = new FormData();
+
             formData.append("name", form.name);
 
             if (form.parent_id) {
@@ -70,125 +106,223 @@ const CategoryCreate = () => {
 
             message.success("Category created successfully");
 
-            setForm({
-                name: "",
-                parent_id: null,
-                image: null,
-                description: "",
-            });
-
             navigate("/dashboard/categories");
+
         } catch (error) {
-            message.error(error?.data?.message || "Failed to create category");
+
+            message.error(
+                error?.data?.message ||
+                "Failed to create category"
+            );
         }
     };
 
     return (
-        <div className="w-full px-6">
+        <div className="space-y-6">
+
+            {/* Breadcrumb */}
+            <Breadcrumb
+                items={[
+                    {
+                        title: (
+                            <Link to="/dashboard">
+                                Dashboard
+                            </Link>
+                        ),
+                    },
+                    {
+                        title: (
+                            <Link to="/dashboard/categories">
+                                Categories
+                            </Link>
+                        ),
+                    },
+                    {
+                        title: "Create",
+                    },
+                ]}
+            />
 
             {/* Header */}
-            <div className="mb-6">
-                <h1 className="text-3xl font-bold">Create New Category</h1>
-                <p className="text-gray-500">
-                    Add category with parent, image and description
-                </p>
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+
+                <div>
+                    <h1 className="text-3xl font-bold flex items-center gap-3">
+                        <AppstoreAddOutlined />
+                        Create Category
+                    </h1>
+
+                    <p className="text-base-content/60 mt-2">
+                        Add a new category with image,
+                        parent category and description.
+                    </p>
+                </div>
+
+                <button
+                    className="btn btn-lg"
+                    onClick={() => navigate("/dashboard/categories")}
+                >
+                    Back to Categories
+                </button>
+
             </div>
 
-            {/* Form Container */}
-            <div className="w-full bg-white p-8 rounded-lg shadow">
+            {/* Form */}
+            <Card className="rounded-2xl shadow-sm border-0">
 
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form
+                    onSubmit={handleSubmit}
+                    className="space-y-8"
+                >
 
-                    {/* ===== ROW (3 FIELDS) ===== */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {/* Basic Info */}
+                    <div>
 
-                        {/* Parent */}
-                        <div>
-                            <label className="block mb-2 font-medium">
-                                Parent Category
-                            </label>
-                            <Select
-                                size="large"
-                                className="w-full"
-                                placeholder="Select parent"
-                                allowClear
-                                value={form.parent_id}
-                                onChange={(value) =>
-                                    handleChange("parent_id", value)
-                                }
-                                options={parentOptions}
-                            />
+                        <h2 className="text-lg font-semibold mb-5">
+                            Basic Information
+                        </h2>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+                            {/* Parent */}
+                            <div>
+
+                                <label className="block mb-2 font-medium">
+                                    Parent Category
+                                </label>
+
+                                <Select
+                                    size="large"
+                                    className="w-full"
+                                    placeholder="Select parent category"
+                                    allowClear
+                                    value={form.parent_id}
+                                    onChange={(value) =>
+                                        handleChange(
+                                            "parent_id",
+                                            value
+                                        )
+                                    }
+                                    options={parentOptions}
+                                />
+
+                            </div>
+
+                            {/* Name */}
+                            <div>
+
+                                <label className="block mb-2 font-medium">
+                                    Category Name
+                                </label>
+
+                                <Input
+                                    size="large"
+                                    placeholder="Enter category name"
+                                    value={form.name}
+                                    onChange={(e) =>
+                                        handleChange(
+                                            "name",
+                                            e.target.value
+                                        )
+                                    }
+                                />
+
+                            </div>
+
                         </div>
 
-                        {/* Name */}
-                        <div>
-                            <label className="block mb-2 font-medium">
-                                Category Name
-                            </label>
-                            <Input
-                                size="large"
-                                value={form.name}
-                                onChange={(e) =>
-                                    handleChange("name", e.target.value)
-                                }
-                                placeholder="Enter name"
-                            />
-                        </div>
                     </div>
 
-                    {/* ===== DESCRIPTION FULL WIDTH ===== */}
+                    {/* Description */}
                     <div>
-                        <label className="block mb-2 font-medium">
+
+                        <h2 className="text-lg font-semibold mb-5">
                             Description
-                        </label>
+                        </h2>
 
                         <Input.TextArea
+                            rows={6}
                             size="large"
-                            rows={5}
+                            placeholder="Write category description..."
                             value={form.description}
-                            onChange={(e) => handleChange("description", e.target.value)}
-                            placeholder="Enter category description"
-                            className="w-full"
+                            onChange={(e) =>
+                                handleChange(
+                                    "description",
+                                    e.target.value
+                                )
+                            }
                         />
+
                     </div>
 
-                    {/* Image */}
+                    {/* Image Upload */}
                     <div>
-                        <label className="block mb-2 font-medium">
+
+                        <h2 className="text-lg font-semibold mb-5">
                             Category Image
-                        </label>
-                        <input
-                            type="file"
-                            onChange={handleImageChange}
-                            className="w-full border p-3 rounded"
-                        />
+                        </h2>
+
+                        <div className="flex flex-col lg:flex-row gap-6 items-start">
+
+                            {/* Upload */}
+                            <Upload
+                                beforeUpload={() => false}
+                                showUploadList={false}
+                                onChange={handleImageChange}
+                            >
+                                <button className="btn btn-primary btn-outline btn-lg h-11 flex items-center gap-2">
+                                    <UploadOutlined />
+                                    Upload Image
+                                </button>
+                            </Upload>
+
+                            {/* Preview */}
+                            {preview && (
+                                <div className="w-40 h-40 rounded-2xl overflow-hidden border bg-base-100">
+
+                                    <img
+                                        src={preview}
+                                        alt="Preview"
+                                        className="w-full h-full object-cover"
+                                    />
+
+                                </div>
+                            )}
+
+                        </div>
+
                     </div>
 
-                    {/* Submit */}
-                    <div className="flex justify-end gap-3 pt-6">
+                    {/* Footer */}
+                    {/* Footer */}
+                    <div className="border-t pt-6 flex justify-end gap-3">
 
                         {/* Back Button */}
-                        <Button
-                            size="large"
-                            onClick={() => navigate("/dashboard/categories")}
+                        <button
+                            type="button"
+                            className="btn h-11 px-6"
+                            onClick={() =>
+                                navigate("/dashboard/categories")
+                            }
                         >
-                            Back
-                        </Button>
+                            Back to Categories
+                        </button>
 
                         {/* Create Button */}
-                        <Button
-                            type="primary"
-                            htmlType="submit"
-                            loading={isLoading}
-                            size="large"
+                        <button
+                            type="submit"
+                            disabled={isLoading}
+                            className="btn btn-primary h-11 px-8"
                         >
-                            Create
-                        </Button>
+                            {isLoading ? "Creating..." : "Create Category"}
+                        </button>
 
                     </div>
 
                 </form>
-            </div>
+
+            </Card>
+
         </div>
     );
 };
