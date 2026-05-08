@@ -22,7 +22,7 @@ const CategoryList = () => {
         page: 1,
         per_page: 10,
         search: "",
-        status: "",
+        is_active: "",
     });
 
     /* ================= QUERY ================= */
