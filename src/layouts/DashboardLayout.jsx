@@ -6,15 +6,23 @@ import DashboardSidebar from '../components/shared/DashboardSidebar';
 const DashboardLayout = () => {
     return (
         <div className="drawer lg:drawer-open">
-            <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
+            <input
+                id="my-drawer-4"
+                type="checkbox"
+                className="drawer-toggle"
+                defaultChecked
+            />
+
             <div className="drawer-content">
                 {/* Navbar */}
                 <DashboardHeader />
+
                 {/* Page content here */}
                 <div className="p-4">
                     <Outlet />
                 </div>
             </div>
+
             {/* Sidebar */}
             <DashboardSidebar />
         </div>
