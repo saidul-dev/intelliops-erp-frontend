@@ -6,13 +6,13 @@ import Contact from "../pages/frontend/Contact";
 import Login from "../pages/frontend/Login";
 import Dashboard from "../pages/dashboard/Dashboard";
 import DashboardLayout from "../layouts/DashboardLayout";
-import Users from "../pages/dashboard/Users";
 import SiteSettings from "../pages/dashboard/admin/SiteSettings";
 import AdminRoute from "./AdminRoute";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
 import CategoryList from "../pages/dashboard/categories/CategoryList";
 import CategoryCreate from "../pages/dashboard/categories/CategoryCreate";
+import UserList from "../pages/dashboard/users/UserList";
 
 export const router = createBrowserRouter([
     {
@@ -33,7 +33,7 @@ export const router = createBrowserRouter([
         element: <PrivateRoute><DashboardLayout /></PrivateRoute>,
         children: [
             { path: "", element: <Dashboard /> },
-            { path: "users", element: <Users /> },
+            { path: "users", element: <UserList /> },
             { path: "settings", element: <AdminRoute><SiteSettings /></AdminRoute> },
             { path: "categories", element: <CategoryList /> },
             { path: "categories/create", element: <CategoryCreate /> },

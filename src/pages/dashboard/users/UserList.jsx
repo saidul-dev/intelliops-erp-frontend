@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { UserList, UserRole } from '../../constants';
 import { Link } from 'react-router';
 import { Dropdown, Popconfirm } from 'antd';
-import AntdTable from '../../components/ui/AntdTable';
+import AntdTable from '../../../components/ui/AntdTable';
 import {
     useGetUsersQuery,
     useDeleteUserMutation
-} from '../../redux/features/users/usersApi';
+} from '../../../redux/features/users/usersApi';
+import useGetUser from '../../../hooks/useGetUser';
 
-const Users = () => {
+const UserList = () => {
     const [queryParams, setQueryParams] = useState({
         page: 1,
         per_page: 10,
@@ -19,7 +19,8 @@ const Users = () => {
     /* ================= QUERY ================= */
     const { data, isLoading } = useGetUsersQuery(queryParams);
     const [deleteUser, { isLoading: deleteLoading }] = useDeleteUserMutation();
-
+    const user = useGetUser();
+    console.log("Current User:", user);
     /* ================= HANDLERS ================= */
     const handleDelete = async (userId) => {
         try {
@@ -64,7 +65,8 @@ const Users = () => {
             dataIndex: 'action',
             align: 'right',
             render: (_, record) => {
-                const isAdmin = UserRole === 'admin';
+
+                const isAdmin = user.roles?.some(role => role.name === 'admin');
 
                 const items = [
                     {
@@ -90,7 +92,7 @@ const Users = () => {
                             </Popconfirm>
                         ),
                     }
-                ].filter(Boolean); // remove false values
+                ].filter(Boolean);
 
                 return (
                     <Dropdown menu={{ items }} trigger={['click']}>
@@ -153,4 +155,4 @@ const Users = () => {
     );
 };
 
-export default Users;
+export default UserList;
