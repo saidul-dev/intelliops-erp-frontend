@@ -6,7 +6,7 @@ import {
     useGetUsersQuery,
     useDeleteUserMutation
 } from '../../../redux/features/users/usersApi';
-import useGetUser from '../../../hooks/useGetUser';
+import useAuthUser from '../../../hooks/useAuthUser';
 
 const UserList = () => {
     const [queryParams, setQueryParams] = useState({
@@ -19,8 +19,8 @@ const UserList = () => {
     /* ================= QUERY ================= */
     const { data, isLoading } = useGetUsersQuery(queryParams);
     const [deleteUser, { isLoading: deleteLoading }] = useDeleteUserMutation();
-    const user = useGetUser();
-    console.log("Current User:", user);
+    const { isAdmin } = useAuthUser();
+
     /* ================= HANDLERS ================= */
     const handleDelete = async (userId) => {
         try {
@@ -65,8 +65,6 @@ const UserList = () => {
             dataIndex: 'action',
             align: 'right',
             render: (_, record) => {
-
-                const isAdmin = user.roles?.some(role => role.name === 'admin');
 
                 const items = [
                     {
