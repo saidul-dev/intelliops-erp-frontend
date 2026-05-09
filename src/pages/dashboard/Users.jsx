@@ -64,20 +64,18 @@ const Users = () => {
             dataIndex: 'action',
             align: 'right',
             render: (_, record) => {
+                const isAdmin = UserRole === 'admin';
+
                 const items = [
                     {
                         key: 'view',
-                        label: (
-                            <Link to={`/users/${record.id}`}>View</Link>
-                        ),
+                        label: <Link to={`/users/${record.id}`}>View</Link>,
                     },
-                    {
+                    isAdmin && {
                         key: 'edit',
-                        label: (
-                            <Link to={`/users/${record.id}/edit`}>Edit</Link>
-                        ),
+                        label: <Link to={`/users/${record.id}/edit`}>Edit</Link>,
                     },
-                    {
+                    isAdmin && {
                         key: 'delete',
                         danger: true,
                         label: (
@@ -92,31 +90,26 @@ const Users = () => {
                             </Popconfirm>
                         ),
                     }
-                ];
+                ].filter(Boolean); // remove false values
 
-                if (UserRole !== 'admin') {
-                    return items.filter(item => item.key === 'view');
-                }
-
-                <Dropdown
-                    menu={{ items }}
-                    trigger={['click']}
-                >
-                    <button className="btn btn-sm btn-ghost">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            className="size-4"
-                        >
-                            <circle cx="12" cy="5" r="1"></circle>
-                            <circle cx="12" cy="12" r="1"></circle>
-                            <circle cx="12" cy="19" r="1"></circle>
-                        </svg>
-                    </button>
-                </Dropdown>
+                return (
+                    <Dropdown menu={{ items }} trigger={['click']}>
+                        <button className="btn btn-sm btn-ghost">
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                className="size-4"
+                            >
+                                <circle cx="12" cy="5" r="1" />
+                                <circle cx="12" cy="12" r="1" />
+                                <circle cx="12" cy="19" r="1" />
+                            </svg>
+                        </button>
+                    </Dropdown>
+                );
             }
         }
     ];
