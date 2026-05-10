@@ -77,6 +77,7 @@ const CategoryList = () => {
                     <div>
                         <Link
                             to={`/dashboard/categories/${record.id}`}
+                            state={{ category: record }}
                             className="font-semibold hover:text-primary transition"
                         >
                             {value}
