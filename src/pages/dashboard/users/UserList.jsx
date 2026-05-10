@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router';
-import { Dropdown, Image, Popconfirm } from 'antd';
+import { Dropdown, Image, Input, Popconfirm, Select } from 'antd';
 import AntdTable from '../../../components/ui/AntdTable';
 import {
     useGetUsersQuery,
@@ -163,6 +163,52 @@ const UserList = () => {
                 >
                     + Create User
                 </Link>
+
+            </div>
+
+            {/* Filters */}
+            <div className="rounded-2xl border border-base-300 bg-base-100 p-4">
+
+                <div className="flex flex-col lg:flex-row gap-4">
+
+                    <Input
+                        size="large"
+                        placeholder="Search users..."
+                        allowClear
+                        onChange={(e) =>
+                            setQueryParams((prev) => ({
+                                ...prev,
+                                page: 1,
+                                search: e.target.value,
+                            }))
+                        }
+                    />
+
+                    <Select
+                        size="large"
+                        placeholder="Filter Status"
+                        allowClear
+                        className="min-w-[200px]"
+                        onChange={(value) =>
+                            setQueryParams((prev) => ({
+                                ...prev,
+                                page: 1,
+                                status: value,
+                            }))
+                        }
+                        options={[
+                            {
+                                label: "Active",
+                                value: 'active',
+                            },
+                            {
+                                label: "Inactive",
+                                value: 'inactive',
+                            },
+                        ]}
+                    />
+
+                </div>
 
             </div>
 
