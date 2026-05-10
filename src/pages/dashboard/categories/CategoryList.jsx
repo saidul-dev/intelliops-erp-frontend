@@ -68,7 +68,7 @@ const CategoryList = () => {
                         alt={value}
                         width={40}
                         height={40}
-                        className="rounded-full object-cover"
+                        className="rounded-2xl object-cover"
                         preview={{
                             mask: "View",
                         }}
