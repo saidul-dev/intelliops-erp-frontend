@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router';
-import { Dropdown, Popconfirm } from 'antd';
+import { Dropdown, Image, Popconfirm } from 'antd';
 import AntdTable from '../../../components/ui/AntdTable';
 import {
     useGetUsersQuery,
@@ -36,9 +36,27 @@ const UserList = () => {
             dataIndex: 'name',
             align: 'left',
             render: (name, record) => (
-                <Link to={`/users/${record.id}`} className="font-medium text-primary">
-                    {name}
-                </Link>
+                <div className="flex items-center gap-2">
+                    {/* Click image -> preview popup */}
+                    <Image
+                        src={record.image_url}
+                        alt={name}
+                        width={32}
+                        height={32}
+                        className="rounded-full object-cover"
+                        preview={{
+                            mask: "View",
+                        }}
+                    />
+
+                    {/* Click name -> navigate */}
+                    <Link
+                        to={`/users/${record.id}`}
+                        className="font-medium text-primary"
+                    >
+                        {name}
+                    </Link>
+                </div>
             ),
         },
         {
