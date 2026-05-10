@@ -31,10 +31,10 @@ const usersApi = baseApi.injectEndpoints({
             providesTags: [tagTypes.USERS],
         }),
         updateUser: builder.mutation({
-            query: (userInfo) => ({
-                url: "/users/update",
-                method: "PUT",
-                body: userInfo,
+            query: ({ id, data }) => ({
+                url: `/users/${id}`,
+                method: "POST",
+                body: data,
             }),
             invalidatesTags: [tagTypes.USERS],
         }),
