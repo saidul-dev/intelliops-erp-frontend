@@ -89,9 +89,6 @@ const UserEdit = () => {
             form.roles.forEach((role) => {
                 formData.append("roles[]", role);
             });
-            // form.roles.forEach((role) => {
-            //     formData.append("roles[]", Number(role));
-            // });
 
             formData.append("status", form.status);
 
