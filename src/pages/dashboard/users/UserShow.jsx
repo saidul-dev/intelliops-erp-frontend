@@ -16,13 +16,35 @@ const UserShow = () => {
     const navigate = useNavigate();
 
     const { data, isLoading } = useShowUserQuery(id);
-    console.log("User data:", data);
+
     const user = data;
 
     if (isLoading) {
         return (
             <div className="space-y-6">
-                <Skeleton active />
+
+                {/* Breadcrumb skeleton */}
+                <Skeleton active paragraph={{ rows: 1 }} />
+
+                {/* Header skeleton */}
+                <Skeleton active paragraph={{ rows: 2 }} />
+
+                {/* Main card skeleton with height */}
+                <Card className="rounded-2xl border-0 shadow-sm">
+                    <div className="flex flex-col lg:flex-row gap-8">
+
+                        {/* Image skeleton */}
+                        <Skeleton.Image style={{ width: 220, height: 220 }} />
+
+                        {/* Content skeleton */}
+                        <div className="flex-1 space-y-6">
+                            <Skeleton active paragraph={{ rows: 4 }} />
+                            <Skeleton active paragraph={{ rows: 3 }} />
+                        </div>
+
+                    </div>
+                </Card>
+
             </div>
         );
     }
