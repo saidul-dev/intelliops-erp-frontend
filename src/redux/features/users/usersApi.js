@@ -23,6 +23,13 @@ const usersApi = baseApi.injectEndpoints({
             }),
             invalidatesTags: [tagTypes.USERS],
         }),
+        showUser: builder.query({
+            query: (userId) => ({
+                url: `/users/${userId}`,
+                method: "GET",
+            }),
+            providesTags: [tagTypes.USERS],
+        }),
         updateUser: builder.mutation({
             query: (userInfo) => ({
                 url: "/users/update",
@@ -44,6 +51,7 @@ const usersApi = baseApi.injectEndpoints({
 export const {
     useGetUsersQuery,
     useStoreUserMutation,
+    useShowUserQuery,
     useUpdateUserMutation,
     useDeleteUserMutation,
 } = usersApi;

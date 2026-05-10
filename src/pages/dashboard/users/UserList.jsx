@@ -51,7 +51,7 @@ const UserList = () => {
 
                     {/* Click name -> navigate */}
                     <Link
-                        to={`/users/${record.id}`}
+                        to={`/dashboard/users/${record.id}`}
                         className="font-medium text-primary"
                     >
                         {name}
@@ -97,11 +97,11 @@ const UserList = () => {
                 const items = [
                     {
                         key: 'view',
-                        label: <Link to={`/users/${record.id}`}>View</Link>,
+                        label: <Link to={`/dashboard/users/${record.id}`}>View</Link>,
                     },
                     isAdmin && {
                         key: 'edit',
-                        label: <Link to={`/users/${record.id}/edit`}>Edit</Link>,
+                        label: <Link to={`/dashboard/users/${record.id}/edit`}>Edit</Link>,
                     },
                     isAdmin && {
                         key: 'delete',
