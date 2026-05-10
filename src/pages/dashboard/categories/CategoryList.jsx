@@ -13,7 +13,8 @@ import {
     Input,
     Select,
     Tooltip,
-    Dropdown
+    Dropdown,
+    Image
 } from "antd";
 
 const CategoryList = () => {
@@ -62,22 +63,16 @@ const CategoryList = () => {
             width: 280,
             render: (value, record) => (
                 <div className="flex items-center gap-3">
-
-                    <div className="avatar">
-                        <div className="w-12 h-12 rounded-xl border bg-base-100">
-                            {record?.image_url ? (
-                                <img
-                                    src={record.image_url}
-                                    alt={value}
-                                    className="object-cover"
-                                />
-                            ) : (
-                                <div className="w-full h-full flex items-center justify-center text-sm font-bold">
-                                    {value?.charAt(0)}
-                                </div>
-                            )}
-                        </div>
-                    </div>
+                    <Image
+                        src={record.image_url}
+                        alt={value}
+                        width={40}
+                        height={40}
+                        className="rounded-full object-cover"
+                        preview={{
+                            mask: "View",
+                        }}
+                    />
 
                     <div>
                         <Link
@@ -108,34 +103,14 @@ const CategoryList = () => {
         },
 
         {
-            title: "Status",
-            dataIndex: "is_active",
-            align: "center",
-            render: (value) => (
-                <Tag
-                    color={value ? "success" : "error"}
-                    className="px-3 py-1 rounded-full font-medium"
-                >
-                    {value ? "Active" : "Inactive"}
-                </Tag>
-            ),
-        },
-
-        {
-            title: "Created",
-            dataIndex: "created_at",
-            align: "center",
-            render: (value) => (
-                <div>
-                    <p className="font-medium">
-                        {new Date(value).toLocaleDateString()}
-                    </p>
-
-                    <p className="text-xs text-base-content/60">
-                        {new Date(value).toLocaleTimeString()}
-                    </p>
-                </div>
-            ),
+            title: 'Status',
+            dataIndex: 'is_active',
+            align: 'center',
+            render: (status) => (
+                <span className={`badge ${status === 1 ? 'badge-success' : 'badge-error'}`}>
+                    {status === 1 ? 'Active' : 'Inactive'}
+                </span>
+            )
         },
 
         {

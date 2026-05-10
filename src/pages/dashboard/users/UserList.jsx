@@ -67,7 +67,7 @@ const UserList = () => {
                 <div className="flex flex-wrap gap-1 justify-center">
                     {roles.map(role => (
                         <span key={role.id} className="badge badge-primary">
-                            {role.name}
+                            {role.name.charAt(0).toUpperCase() + role.name.slice(1)}
                         </span>
                     ))}
                 </div>
@@ -77,6 +77,16 @@ const UserList = () => {
             title: 'Email',
             dataIndex: 'email',
             align: 'center',
+        },
+        {
+            title: 'Status',
+            dataIndex: 'status',
+            align: 'center',
+            render: (status) => (
+                <span className={`badge ${status === 'active' ? 'badge-success' : 'badge-error'}`}>
+                    {status.charAt(0).toUpperCase() + status.slice(1)}
+                </span>
+            )
         },
         {
             title: 'Action',
