@@ -13,6 +13,7 @@ import PublicRoute from "./PublicRoute";
 import CategoryList from "../pages/dashboard/categories/CategoryList";
 import CategoryCreate from "../pages/dashboard/categories/CategoryCreate";
 import UserList from "../pages/dashboard/users/UserList";
+import UserCreate from "../pages/dashboard/users/UserCreate";
 
 export const router = createBrowserRouter([
     {
@@ -34,6 +35,7 @@ export const router = createBrowserRouter([
         children: [
             { path: "", element: <Dashboard /> },
             { path: "users", element: <UserList /> },
+            { path: "users/create", element: <UserCreate /> },
             { path: "settings", element: <AdminRoute><SiteSettings /></AdminRoute> },
             { path: "categories", element: <CategoryList /> },
             { path: "categories/create", element: <CategoryCreate /> },
