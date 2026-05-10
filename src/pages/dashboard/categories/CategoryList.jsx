@@ -137,7 +137,7 @@ const CategoryList = () => {
                         key: "edit",
                         label: (
                             <Link
-                                to={`/dashboard/categories/edit/${record.id}`}
+                                to={`/dashboard/categories/${record.id}/edit`}
                             >
                                 Edit
                             </Link>

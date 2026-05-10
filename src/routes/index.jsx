@@ -15,8 +15,9 @@ import CategoryCreate from "../pages/dashboard/categories/CategoryCreate";
 import UserList from "../pages/dashboard/users/UserList";
 import UserCreate from "../pages/dashboard/users/UserCreate";
 import UserShow from "../pages/dashboard/users/UserShow";
-import UserUpdate from "../pages/dashboard/users/UserEdit";
 import CategoryShow from "../pages/dashboard/categories/CategoryShow";
+import UserEdit from "../pages/dashboard/users/UserEdit";
+import CategoryEdit from "../pages/dashboard/categories/CategoryEdit";
 
 export const router = createBrowserRouter([
     {
@@ -42,7 +43,7 @@ export const router = createBrowserRouter([
             { path: "users", element: <UserList /> },
             { path: "users/create", element: <UserCreate /> },
             { path: "users/:id", element: <UserShow /> },
-            { path: "users/:id/edit", element: <UserUpdate /> },
+            { path: "users/:id/edit", element: <UserEdit /> },
 
             // Settings
             { path: "settings", element: <AdminRoute><SiteSettings /></AdminRoute> },
@@ -51,6 +52,7 @@ export const router = createBrowserRouter([
             { path: "categories", element: <CategoryList /> },
             { path: "categories/create", element: <CategoryCreate /> },
             { path: "categories/:id", element: <CategoryShow /> },
+            { path: "categories/:id/edit", element: <CategoryEdit /> },
         ]
     },
     {

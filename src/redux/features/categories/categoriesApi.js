@@ -31,10 +31,10 @@ const categoriesApi = baseApi.injectEndpoints({
             providesTags: [tagTypes.CATEGORIES],
         }),
         updateCategory: builder.mutation({
-            query: (categoryInfo) => ({
-                url: "/categories/update",
-                method: "PUT",
-                body: categoryInfo,
+            query: ({ categoryId, payload }) => ({
+                url: `/categories/${categoryId}`,
+                method: "POST",
+                body: payload,
             }),
             invalidatesTags: [tagTypes.CATEGORIES],
         }),
