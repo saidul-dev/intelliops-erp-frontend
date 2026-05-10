@@ -5,12 +5,14 @@ import { useAppDispatch } from '../../redux/hooks';
 import { persistor } from '../../redux/store';
 import { baseApi } from '../../redux/api/baseApi';
 import { useLogoutMutation } from '../../redux/features/auth/authApi';
+import useAuthUser from '../../hooks/useAuthUser';
 
 const DashboardHeader = () => {
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const [logout, { isLoading }] = useLogoutMutation();
+    const { user } = useAuthUser();
 
     const handleLogout = async (event) => {
         event.preventDefault();
@@ -100,16 +102,27 @@ const DashboardHeader = () => {
                         >
                             <div className="avatar placeholder">
                                 <div className="bg-primary text-primary-content rounded-full w-10">
-                                    <span className="font-semibold">SA</span>
+                                    {user?.image_url ? (
+                                        <img
+                                            src={user.image_url}
+                                            alt={user.name}
+                                            className="w-full h-full object-cover rounded-full"
+                                        />
+                                    ) : (
+                                        <span className="font-semibold pl-2">
+                                            {user?.name ? user.name.substring(0, 2).toUpperCase() : "SA"}
+                                        </span>
+                                    )}
                                 </div>
                             </div>
 
                             <div className="hidden md:block">
                                 <h3 className="font-semibold leading-none">
-                                    Super Admin
+                                    {user?.name || "Super Admin"}
                                 </h3>
                                 <p className="text-xs text-base-content/60 mt-1">
-                                    Administrator
+                                    {/* capitalize first letter */}
+                                    {user?.roles?.[0]?.name ? user.roles[0].name.charAt(0).toUpperCase() + user.roles[0].name.slice(1) : "Admin"}
                                 </p>
                             </div>
                         </div>
