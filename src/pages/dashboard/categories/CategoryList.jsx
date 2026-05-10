@@ -123,22 +123,23 @@ const CategoryList = () => {
 
                 const items = [
                     {
+                        key: "view",
+                        label: (
+                            <Link
+                                to={`/dashboard/categories/${record.id}`}
+                                state={{ category: record }}
+                            >
+                                View
+                            </Link>
+                        ),
+                    },
+                    {
                         key: "edit",
                         label: (
                             <Link
                                 to={`/dashboard/categories/edit/${record.id}`}
                             >
                                 Edit
-                            </Link>
-                        ),
-                    },
-                    {
-                        key: "view",
-                        label: (
-                            <Link
-                                to={`/dashboard/categories/${record.id}`}
-                            >
-                                View
                             </Link>
                         ),
                     },

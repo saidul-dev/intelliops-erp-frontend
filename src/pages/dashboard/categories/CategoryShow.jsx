@@ -2,7 +2,7 @@ import React from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router';
 import { Image, Skeleton, Tag } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
-import { useGetCategoriesQuery } from '../../../redux/features/categories/categoriesApi';
+import { useGetCategoryQuery } from '../../../redux/features/categories/categoriesApi';
 
 const CategoryShow = () => {
     const { id } = useParams();
@@ -12,7 +12,7 @@ const CategoryShow = () => {
     const initialCategory = location.state?.category;
 
     // Fetch fresh data
-    const { data, isLoading } = useGetCategoriesQuery(id);
+    const { data, isLoading } = useGetCategoryQuery(id);
 
     // Use fresh data first, fallback to listing data
     const category = data?.data || initialCategory;
