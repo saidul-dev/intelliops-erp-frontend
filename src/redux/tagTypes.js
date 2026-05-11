@@ -1,7 +1,7 @@
 export const tagTypes = {
-  USER_INFO: "user_info",
   CATEGORIES: "categories",
   USERS: "users",
+  SITESETTINGS: "site_settings",
 };
 
 export const tagTypesList = Object.values(tagTypes);
