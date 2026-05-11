@@ -1,7 +1,7 @@
 import { Navigate } from "react-router";
 import useAuthUser from '../hooks/useAuthUser';
 
-const AdminRoute = ({ children }) => {
+const AccessControlRoute = ({ children }) => {
     const { isAdmin } = useAuthUser();
 
     if (isAdmin) {
@@ -12,4 +12,4 @@ const AdminRoute = ({ children }) => {
     </div>;
 };
 
-export default AdminRoute;
+export default AccessControlRoute;

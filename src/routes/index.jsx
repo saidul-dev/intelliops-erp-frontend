@@ -7,7 +7,7 @@ import Login from "../pages/frontend/Login";
 import Dashboard from "../pages/dashboard/Dashboard";
 import DashboardLayout from "../layouts/DashboardLayout";
 import SiteSettings from "../pages/dashboard/admin/SiteSettings";
-import AdminRoute from "./AdminRoute";
+import AdminRoute from "./AccessControlRoute";
 import PrivateRoute from "./PrivateRoute";
 import PublicRoute from "./PublicRoute";
 import CategoryList from "../pages/dashboard/categories/CategoryList";
