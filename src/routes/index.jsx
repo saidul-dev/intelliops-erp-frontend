@@ -39,14 +39,14 @@ export const router = createBrowserRouter([
         children: [
             { path: "", element: <Dashboard /> },
 
+            // Settings
+            { path: "site-settings", element: <AdminRoute><SiteSettings /></AdminRoute> },
+
             // Users
             { path: "users", element: <UserList /> },
             { path: "users/create", element: <UserCreate /> },
             { path: "users/:id", element: <UserShow /> },
             { path: "users/:id/edit", element: <UserEdit /> },
-
-            // Settings
-            { path: "settings", element: <AdminRoute><SiteSettings /></AdminRoute> },
 
             // Categories
             { path: "categories", element: <CategoryList /> },

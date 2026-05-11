@@ -1,9 +1,10 @@
 import { Navigate } from "react-router";
-import { UserRole } from "../constants";
-
+import useAuthUser from '../../../hooks/useAuthUser';
 
 const AdminRoute = ({ children }) => {
-    if (UserRole === 'admin') {
+    const { isAdmin } = useAuthUser();
+
+    if (isAdmin) {
         return children;
     }
     return <div>
