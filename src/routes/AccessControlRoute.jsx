@@ -8,7 +8,7 @@ const AccessControlRoute = ({ children }) => {
         return children;
     }
     return <div>
-        <Navigate to="/denied-access" />
+        <Navigate to="/access-denied" />
     </div>;
 };
 

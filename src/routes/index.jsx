@@ -18,6 +18,7 @@ import UserShow from "../pages/dashboard/users/UserShow";
 import CategoryShow from "../pages/dashboard/categories/CategoryShow";
 import UserEdit from "../pages/dashboard/users/UserEdit";
 import CategoryEdit from "../pages/dashboard/categories/CategoryEdit";
+import AccessDenied from "../pages/AccessDenied";
 
 export const router = createBrowserRouter([
     {
@@ -56,7 +57,7 @@ export const router = createBrowserRouter([
         ]
     },
     {
-        path: "/denied-access",
-        element: <div>Access Denied</div>
+        path: "/access-denied",
+        element: <AccessDenied />
     }
 ]);
