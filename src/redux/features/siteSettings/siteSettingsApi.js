@@ -23,4 +23,7 @@ const siteSettingsApi = baseApi.injectEndpoints({
     })
 });
 
-export const { getSiteSettings, storeSiteSettings } = siteSettingsApi;
+export const {
+    useGetSiteSettingsQuery,
+    useStoreSiteSettingsMutation,
+} = siteSettingsApi;

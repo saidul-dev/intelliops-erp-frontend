@@ -1,5 +1,5 @@
 import { Navigate } from "react-router";
-import useAuthUser from '../../../hooks/useAuthUser';
+import useAuthUser from '../hooks/useAuthUser';
 
 const AdminRoute = ({ children }) => {
     const { isAdmin } = useAuthUser();
