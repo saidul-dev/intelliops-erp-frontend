@@ -44,15 +44,15 @@ export const router = createBrowserRouter([
 
             // Users
             { path: "users", element: <UserList /> },
-            { path: "users/create", element: <UserCreate /> },
+            { path: "users/create", element: <AdminRoute><UserCreate /></AdminRoute> },
             { path: "users/:id", element: <UserShow /> },
-            { path: "users/:id/edit", element: <UserEdit /> },
+            { path: "users/:id/edit", element: <AdminRoute><UserEdit /></AdminRoute> },
 
             // Categories
             { path: "categories", element: <CategoryList /> },
-            { path: "categories/create", element: <CategoryCreate /> },
+            { path: "categories/create", element: <AdminRoute><CategoryCreate /></AdminRoute> },
             { path: "categories/:id", element: <CategoryShow /> },
-            { path: "categories/:id/edit", element: <CategoryEdit /> },
+            { path: "categories/:id/edit", element: <AdminRoute><CategoryEdit /></AdminRoute> },
         ]
     },
     {

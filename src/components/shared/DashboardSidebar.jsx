@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router';
-import { UserRole } from '../../constants';
+import useAuthUser from '../../hooks/useAuthUser';
 
 const DashboardSidebar = () => {
 
     const location = useLocation();
+
+    const { isAdmin } = useAuthUser();
 
     const menus = [
         {
@@ -45,7 +47,7 @@ const DashboardSidebar = () => {
         }
     ];
 
-    if (UserRole === "admin") {
+    if (isAdmin) {
         menus.push({
             name: "Settings",
             path: "/dashboard/site-settings",
