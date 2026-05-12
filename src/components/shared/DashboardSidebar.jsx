@@ -1,12 +1,15 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router';
 import useAuthUser from '../../hooks/useAuthUser';
+import { useGetSiteSettingsQuery } from '../../redux/features/siteSettings/siteSettingsApi';
 
 const DashboardSidebar = () => {
 
     const location = useLocation();
 
     const { isAdmin } = useAuthUser();
+
+    const { data: siteSettings } = useGetSiteSettingsQuery();
 
     const menus = [
         {
@@ -81,16 +84,26 @@ const DashboardSidebar = () => {
                 <div className="h-16 border-b border-base-300 flex items-center px-6">
                     <div className="flex items-center gap-3">
 
-                        <div className="w-10 h-10 rounded-xl bg-primary text-primary-content flex items-center justify-center font-bold text-lg shadow">
-                            IP
-                        </div>
+                        {
+                            siteSettings?.site_logo ? (
+                                <img
+                                    src={siteSettings.site_logo}
+                                    alt="Site Logo"
+                                    className="w-10 h-10 rounded-xl"
+                                />
+                            ) : (
+                                <div className="w-10 h-10 rounded-xl bg-primary text-primary-content flex items-center justify-center font-bold text-lg shadow">
+                                    IP
+                                </div>
+                            )
+                        }
 
                         <div>
                             <h2 className="font-bold text-lg leading-none">
-                                IntelliOps
+                                {siteSettings?.site_name || "IntelliOps ERP"}
                             </h2>
                             <p className="text-xs text-base-content/60 mt-1">
-                                ERP Dashboard
+                                {siteSettings?.site_description || "Smart Business Management System"}
                             </p>
                         </div>
                     </div>
@@ -128,7 +141,7 @@ const DashboardSidebar = () => {
                 <div className="p-4 border-t border-base-300">
                     <div className="rounded-xl bg-base-200 p-4">
                         <p className="text-sm font-medium">
-                            IntelliOps ERP
+                            {siteSettings?.site_name || "IntelliOps ERP"}
                         </p>
 
                         <p className="text-xs text-base-content/60 mt-1">

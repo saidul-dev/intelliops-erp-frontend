@@ -6,12 +6,15 @@ import { persistor } from '../../redux/store';
 import { baseApi } from '../../redux/api/baseApi';
 import { useLogoutMutation } from '../../redux/features/auth/authApi';
 import useAuthUser from '../../hooks/useAuthUser';
+import { useGetSiteSettingsQuery } from '../../redux/features/siteSettings/siteSettingsApi';
 
 const DashboardHeader = () => {
 
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const { user } = useAuthUser();
+
+    const { data: siteSettings } = useGetSiteSettingsQuery();
 
     const [logout, { isLoading }] = useLogoutMutation();
 
@@ -66,7 +69,7 @@ const DashboardHeader = () => {
 
                         <div>
                             <h1 className="text-lg lg:text-xl font-bold">
-                                IntelliOps ERP
+                                {siteSettings?.site_name || "IntelliOps ERP"}
                             </h1>
                             <p className="text-xs text-base-content/60 hidden sm:block">
                                 Smart Business Management System
