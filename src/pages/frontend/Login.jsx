@@ -29,9 +29,6 @@ const Login = () => {
 
             const res = await login(values).unwrap();
 
-
-            console.log("Login result:", res);
-
             if (res?.user && res?.token) {
                 dispatch(
                     setUser({
@@ -47,7 +44,6 @@ const Login = () => {
                 navigate(from, { replace: true });
             }
         } catch (error) {
-            console.error("Login request failed:", error);
             toast.error(error?.data?.message || error?.error || "Login failed");
         }
     };
